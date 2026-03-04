@@ -61,3 +61,17 @@ body {
 *::-webkit-scrollbar {
   display: none;
 }
+
+/* ── Android WebView font scaling fix ── */
+/* Prevents Android from auto-scaling text */
+:root {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* Capacitor/Android specific — normalize base font */
+@media screen and (max-width: 480px) {
+  html {
+    font-size: 14px;
+  }
+}
