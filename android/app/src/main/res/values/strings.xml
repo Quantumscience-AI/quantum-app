@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">QuantumScienceAI</string>
+    <string name="title_activity_main">QuantumScienceAI</string>
+    <string name="package_name">com.quantumscienceai.app</string>
+    <string name="custom_url_scheme">com.quantumscienceai.app</string>
+</resources>

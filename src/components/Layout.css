@@ -1,0 +1,44 @@
+/* ── Base layout ── */
+.layout {
+  min-height: 100vh;
+  background: var(--color-bg);
+  display: block;
+  position: relative;
+}
+
+/* ── Mobile: content sits above 64px bottom nav ── */
+.main-content {
+  padding-bottom: 64px;
+  min-height: 100vh;
+  box-sizing: border-box;
+  width: 100%;
+  margin-left: 0;
+}
+
+/* ── Desktop: sidebar is 240px fixed, content pushed right ── */
+@media (min-width: 769px) {
+  .main-content {
+    margin-left: 240px;
+    padding-bottom: 0;
+    min-height: 100vh;
+    width: calc(100% - 240px);
+    box-sizing: border-box;
+  }
+}
+
+/* Utility */
+.gradient-text {
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6, #06b6d4);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  display: inline-block;
+}
+
+.glass-card {
+  background: rgba(30, 41, 59, 0.4);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}

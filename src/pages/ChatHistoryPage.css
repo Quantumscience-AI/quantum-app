@@ -1,0 +1,280 @@
+.chat-history-page {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 64px;
+  background: var(--color-bg);
+  display: flex;
+  flex-direction: column;
+  z-index: 1500;
+  overflow: hidden;
+}
+
+.history-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+
+.back-btn {
+  background: transparent;
+  border: none;
+  color: var(--color-text);
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  min-width: 44px;
+  min-height: 44px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.back-btn:active {
+  background: var(--color-surface-alt);
+}
+
+.history-header h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.history-content {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.empty-history {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 16px;
+  text-align: center;
+  color: var(--color-text-secondary);
+  padding: 24px;
+}
+
+.empty-icon {
+  color: var(--color-text-secondary);
+  opacity: 0.5;
+}
+
+.empty-history p {
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 0;
+  color: var(--color-text);
+}
+
+.empty-history span {
+  font-size: 0.9rem;
+}
+
+.chats-feed {
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-post {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 16px;
+  background: var(--color-bg);
+  transition: background 0.2s ease;
+  cursor: pointer;
+}
+
+.chat-post:active {
+  background: var(--color-surface-alt);
+}
+
+.chat-post-content {
+  flex: 1;
+  min-width: 0;
+  padding-right: 12px;
+}
+
+.chat-post-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0 0 6px 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chat-post-preview {
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  margin: 0 0 8px 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chat-post-time {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+}
+
+.chat-post-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.chat-post-btn {
+  background: transparent;
+  border: none;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: background 0.2s ease;
+  min-width: 36px;
+  min-height: 36px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.chat-post-btn:active {
+  background: var(--color-surface-alt);
+}
+
+.chat-divider {
+  height: 1px;
+  background: var(--color-border);
+  margin: 0;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 20px;
+}
+
+.rename-modal {
+  background: var(--color-surface);
+  border-radius: 16px;
+  padding: 24px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.rename-modal h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: var(--color-text);
+}
+
+.rename-input {
+  width: 100%;
+  padding: 12px 16px;
+  background: var(--color-surface-alt);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  color: var(--color-text);
+  font-size: 1rem;
+  margin-bottom: 20px;
+  min-height: 48px;
+}
+
+.rename-input:focus {
+  outline: none;
+  border-color: var(--color-text);
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.modal-cancel-btn,
+.modal-save-btn {
+  flex: 1;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: 48px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.modal-cancel-btn {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+}
+
+.modal-cancel-btn:active {
+  background: var(--color-surface-alt);
+}
+
+.modal-save-btn {
+  background: var(--color-text);
+  color: var(--color-bg);
+  border: none;
+}
+
+.modal-save-btn:active {
+  opacity: 0.8;
+}
+
+@media (max-width: 640px) {
+  .chat-post {
+    padding: 12px 16px;
+  }
+  
+  .chat-post-title {
+    font-size: 0.95rem;
+  }
+  
+  .chat-post-preview {
+    font-size: 0.85rem;
+  }
+  
+  .chat-post-actions {
+    gap: 4px;
+  }
+  
+  .chat-post-btn {
+    min-width: 32px;
+    min-height: 32px;
+  }
+}
+
+
+/* ── Desktop: account for 240px sidebar ── */
+@media (min-width: 769px) {
+  .chat-history-page {
+    left: 240px;
+    right: 0;
+    bottom: 0;
+    width: calc(100% - 240px);
+  }
+}

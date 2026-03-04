@@ -1,0 +1,105 @@
+.iab-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-bg);
+}
+
+.iab-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  min-height: 52px;
+  flex-shrink: 0;
+}
+
+.iab-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: transparent;
+  border: none;
+  color: var(--color-text);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  transition: background 0.2s;
+  -webkit-tap-highlight-color: transparent;
+  flex-shrink: 0;
+}
+
+.iab-btn:active {
+  background: var(--color-surface-alt);
+}
+
+.iab-back-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.iab-url-bar {
+  flex: 1;
+  background: var(--color-surface-alt);
+  border-radius: 8px;
+  padding: 6px 12px;
+  overflow: hidden;
+}
+
+.iab-url-text {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
+
+.iab-actions {
+  display: flex;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.iab-loading-bar {
+  height: 3px;
+  background: var(--color-surface-alt);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.iab-loading-progress {
+  height: 100%;
+  width: 40%;
+  background: linear-gradient(90deg, transparent, var(--color-text), transparent);
+  animation: iabSlide 1.2s infinite;
+}
+
+@keyframes iabSlide {
+  0%   { transform: translateX(-200%); }
+  100% { transform: translateX(400%); }
+}
+
+.iab-iframe {
+  flex: 1;
+  width: 100%;
+  border: none;
+  background: #fff;
+}
+
+@media (max-width: 480px) {
+  .iab-back-label {
+    display: none;
+  }
+  .iab-toolbar {
+    padding: 8px;
+    gap: 4px;
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "appId": "com.quantumscienceai.app",
+  "appName": "QuantumScienceAI",
+  "webDir": "dist",
+  "bundledWebRuntime": false,
+  "android": {
+    "allowMixedContent": true,
+    "captureInput": true,
+    "webContentsDebuggingEnabled": false
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 2000,
+      "launchAutoHide": true,
+      "backgroundColor": "#000000",
+      "androidSplashResourceName": "splash",
+      "showSpinner": false
+    },
+    "Browser": {
+      "presentationStyle": "fullscreen"
+    }
+  },
+  "server": {
+    "androidScheme": "https"
+  }
+}

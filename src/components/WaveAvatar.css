@@ -1,0 +1,186 @@
+.wave-avatar-container {
+  --avatar-size: 100px;
+  position: relative;
+  width: var(--avatar-size);
+  height: var(--avatar-size);
+}
+
+.wave-avatar-glow {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--wave-color-1)40 0%, transparent 70%);
+  transform: scale(1.1);
+  animation: pulse-glow 2s ease-in-out infinite;
+  z-index: 0;
+}
+
+.wave-avatar-circle {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: linear-gradient(135deg, 
+    color-mix(in srgb, var(--wave-color-2) 20%, transparent) 0%,
+    color-mix(in srgb, var(--wave-color-3) 10%, transparent) 100%
+  );
+  border: 2px solid color-mix(in srgb, var(--wave-color-2) 40%, transparent);
+  box-shadow: 
+    inset 0 0 20px color-mix(in srgb, var(--wave-color-1) 20%, transparent),
+    0 0 20px color-mix(in srgb, var(--wave-color-2) 20%, transparent);
+  overflow: hidden;
+  z-index: 1;
+}
+
+.wave-avatar-waves {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+  height: 100%;
+}
+
+.wave-layer {
+  position: absolute;
+  bottom: 0;
+  width: 200%;
+  border-radius: 40%;
+}
+
+.wave-layer-1 {
+  height: 60%;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    var(--wave-color-1) 50%, 
+    transparent 100%
+  );
+  opacity: 0.8;
+  animation: wave 12s linear infinite;
+}
+
+.wave-layer-2 {
+  height: 50%;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    var(--wave-color-2) 50%, 
+    transparent 100%
+  );
+  opacity: 0.6;
+  animation: wave 16s linear infinite;
+  animation-delay: -4s;
+}
+
+.wave-layer-3 {
+  height: 40%;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    var(--wave-color-3) 50%, 
+    transparent 100%
+  );
+  opacity: 0.4;
+  animation: wave 8s linear infinite;
+  animation-delay: -8s;
+}
+
+.wave-avatar-surface {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 33%;
+  background: linear-gradient(to bottom, 
+    var(--wave-color-1) 0%, 
+    transparent 100%
+  );
+  opacity: 0.3;
+}
+
+.wave-avatar-particles {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.wave-particle {
+  position: absolute;
+  border-radius: 50%;
+  background-color: var(--particle-color);
+  width: var(--particle-size);
+  height: var(--particle-size);
+  top: var(--particle-top);
+  left: var(--particle-left);
+  opacity: var(--particle-opacity);
+  animation: particle-float var(--particle-duration) ease-in-out infinite;
+  animation-delay: var(--particle-delay);
+}
+
+@keyframes particle-float {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+    opacity: var(--particle-opacity);
+  }
+  50% {
+    transform: translateY(-10px) scale(1.2);
+    opacity: calc(var(--particle-opacity) * 1.5);
+  }
+}
+
+/* Color Selector */
+.color-selector {
+  display: flex;
+  gap: 12px;
+  padding: 16px;
+}
+
+.color-button {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.color-button:hover {
+  transform: scale(1.1);
+}
+
+.color-button.selected {
+  transform: scale(1.2);
+  box-shadow: 
+    0 0 0 2px white,
+    0 0 0 4px #1e293b;
+}
+
+.color-button.blue {
+  background-color: #3b82f6;
+}
+
+.color-button.purple {
+  background-color: #8b5cf6;
+}
+
+.color-button.emerald {
+  background-color: #10b981;
+}
+
+.color-button.rose {
+  background-color: #fb7185;
+}
+
+@keyframes wave {
+  0% { transform: translateX(0) translateZ(0) scaleY(1); }
+  50% { transform: translateX(-25%) translateZ(0) scaleY(0.85); }
+  100% { transform: translateX(-50%) translateZ(0) scaleY(1); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}

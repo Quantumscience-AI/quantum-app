@@ -1,0 +1,310 @@
+.auth-page {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--color-bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px 20px 20px;
+  overflow-y: auto;
+}
+
+.auth-container {
+  width: 100%;
+  max-width: 400px;
+  position: relative;
+}
+
+.glass-logo {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(59, 130, 246, 0.1));
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(128, 128, 128, 0.3);
+  padding: 12px 24px;
+  border-radius: 50px;
+  display: inline-block;
+  color: var(--color-text);
+}
+
+.back-to-login {
+  position: absolute;
+  top: -60px;
+  left: 0;
+  background: transparent;
+  border: none;
+  color: var(--color-text);
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.back-to-login:active {
+  background: var(--color-surface-alt);
+}
+
+.auth-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 48px;
+  text-align: center;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.error-message {
+  padding: 12px 16px;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 50px;
+  color: #ef4444;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.success-message {
+  padding: 12px 16px;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  border-radius: 50px;
+  color: #10b981;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+/* ── Input pill ── */
+.input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-radius: 50px;
+  padding: 4px 16px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  /* hardcoded for both themes — no CSS variable ambiguity */
+  background: #ffffff;
+  border: 1.5px solid #c4c4c4;
+}
+
+[data-theme="dark"] .input-group {
+  background: #1a1a1a;
+  border: 1.5px solid #333333;
+}
+
+.input-group:focus-within {
+  border-color: #888888;
+  box-shadow: 0 0 0 3px rgba(128, 128, 128, 0.15);
+}
+
+[data-theme="dark"] .input-group:focus-within {
+  border-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+}
+
+.input-icon {
+  color: var(--color-text-secondary);
+  flex-shrink: 0;
+  margin-right: 12px;
+}
+
+.auth-input {
+  flex: 1;
+  padding: 14px 0;
+  background: transparent;
+  border: none;
+  color: var(--color-text);
+  font-size: 1rem;
+  min-width: 0;
+}
+
+.auth-input:focus {
+  outline: none;
+}
+
+.auth-input::placeholder {
+  color: var(--color-text-secondary);
+}
+
+/* Eye toggle — locked inside pill */
+.toggle-password-inside {
+  background: transparent;
+  border: none;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+  flex-shrink: 0;
+  margin-left: 4px;
+  position: relative;
+  z-index: 1;
+}
+
+.toggle-password-inside:active {
+  background: rgba(128, 128, 128, 0.2);
+}
+
+/* ── Submit button ── */
+.auth-submit-btn {
+  padding: 16px;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  margin-top: 8px;
+  -webkit-tap-highlight-color: transparent;
+  /* light mode: black pill with white text */
+  background: #000000;
+  color: #ffffff;
+  border: 1.5px solid #000000;
+}
+
+[data-theme="dark"] .auth-submit-btn {
+  background: #ffffff;
+  color: #000000;
+  border: 1.5px solid #ffffff;
+}
+
+.auth-submit-btn:active:not(:disabled) {
+  opacity: 0.8;
+}
+
+.auth-submit-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ── Divider ── */
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 8px 0;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #c4c4c4;
+}
+
+[data-theme="dark"] .auth-divider::before,
+[data-theme="dark"] .auth-divider::after {
+  background: #333333;
+}
+
+.auth-divider span {
+  color: var(--color-text-secondary);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+/* ── Secondary button (Create Account) ── */
+.auth-secondary-btn {
+  padding: 16px;
+  background: transparent;
+  color: #000000;
+  border: 1.5px solid #c4c4c4;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+[data-theme="dark"] .auth-secondary-btn {
+  color: #ffffff;
+  border-color: #333333;
+}
+
+.auth-secondary-btn:active {
+  background: var(--color-surface-alt);
+}
+
+/* ── Forgot password ── */
+.forgot-password-btn {
+  padding: 12px;
+  background: transparent;
+  border: none;
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-align: center;
+  transition: color 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.forgot-password-btn:active {
+  color: var(--color-text);
+}
+
+/* ── Footer ── */
+.auth-footer {
+  margin-top: 32px;
+  text-align: center;
+  padding: 0 20px;
+}
+
+.auth-footer-text {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+.auth-footer-text a {
+  color: var(--color-text);
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.auth-footer-text a:active {
+  opacity: 0.7;
+}
+
+@media (max-width: 480px) {
+  .auth-title {
+    font-size: 1.75rem;
+    margin-bottom: 40px;
+  }
+
+  .auth-input {
+    font-size: 16px;
+  }
+
+  .glass-logo {
+    font-size: 1.25rem;
+  }
+}
+
+/* ── Desktop: auth pages always full screen, no sidebar offset ── */
+@media (min-width: 769px) {
+  .auth-page {
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 1200;
+  }
+}

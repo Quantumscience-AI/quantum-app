@@ -1,0 +1,231 @@
+.input-container {
+  background: var(--color-bg);
+  flex-shrink: 0;
+}
+
+.uploaded-files-preview {
+  display: flex;
+  gap: 8px;
+  padding: 12px 16px;
+  overflow-x: auto;
+  border-top: 1px solid var(--color-border);
+}
+
+.file-preview-item {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.image-preview-wrapper {
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+
+.file-preview-image {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+}
+
+.ocr-loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ocr-spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.file-preview-doc {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 8px;
+}
+
+.file-name {
+  font-size: 0.7rem;
+  color: var(--color-text);
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.remove-file-btn {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: var(--color-danger);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.input-wrapper {
+  padding: 12px 16px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.editing-indicator {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: rgba(139, 92, 246, 0.1);
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.editing-indicator span {
+  color: #8b5cf6;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.cancel-edit-btn {
+  background: transparent;
+  border: none;
+  color: #8b5cf6;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.cancel-edit-btn:active {
+  background: rgba(139, 92, 246, 0.2);
+}
+
+.input-controls {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  background: transparent;
+  border-bottom: 2px solid var(--color-border);
+  padding: 8px 0;
+  transition: border-color 0.2s ease;
+}
+
+.input-controls:focus-within {
+  border-bottom-color: var(--color-text);
+}
+
+.input-icon-btn {
+  background: transparent;
+  border: none;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease;
+  flex-shrink: 0;
+  margin-bottom: 2px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.input-icon-btn:active {
+  color: var(--color-text);
+}
+
+.message-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--color-text);
+  font-size: 0.95rem;
+  padding: 4px 0;
+  min-width: 0;
+  resize: none;
+  font-family: inherit;
+  line-height: 1.5;
+  max-height: 120px;
+  overflow-y: auto;
+}
+
+.message-input::placeholder {
+  color: var(--color-text-secondary);
+}
+
+.send-button {
+  background: transparent;
+  border: none;
+  color: var(--color-text);
+  cursor: pointer;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  margin-bottom: 2px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.send-button:active:not(:disabled) {
+  color: var(--color-text);
+  transform: scale(1.1);
+}
+
+.send-button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.file-icon-preview {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-surface-alt);
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+}
+
+.file-preview-wrapper {
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
