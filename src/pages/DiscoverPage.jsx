@@ -73,7 +73,7 @@ const DiscoverPage = ({ onOpenUrl }) => {
   }, []);
 
   const loadFeed = async () => {
-    if (!(await checkRealConnectivity())) {
+    if (!checkRealConnectivity()) {
       setShowNetworkModal(true);
       setLoading(false);
       return;
@@ -91,7 +91,7 @@ const DiscoverPage = ({ onOpenUrl }) => {
 
   const handleSearch = async () => {
     if (!searchQuery.trim()) return;
-    if (!(await checkRealConnectivity())) { setShowNetworkModal(true); return; }
+    if (!checkRealConnectivity()) { setShowNetworkModal(true); return; }
     if (!user && !canUse('SEARCH')) { setShowLimitModal(true); return; }
 
     setLoading(true);

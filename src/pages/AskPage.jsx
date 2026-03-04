@@ -143,7 +143,7 @@ const AskPage = ({ onNavigateToHistory }) => {
 
   const handleSend = async () => {
     if ((!inputValue.trim() && uploadedFiles.length === 0) || isGenerating) return;
-    if (!(await checkRealConnectivity())) { handleNetworkError(); return; }
+    if (!checkRealConnectivity()) { handleNetworkError(); return; }
     if (!user && !canUse('CHAT')) { setShowLimitModal(true); return; }
     if (!currentChatId) setCurrentChatId(Date.now().toString());
 

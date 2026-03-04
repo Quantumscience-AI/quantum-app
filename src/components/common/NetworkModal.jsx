@@ -2,17 +2,10 @@ import React from 'react';
 import { WifiOff } from 'lucide-react';
 import './NetworkModal.css';
 
-export const checkRealConnectivity = async () => {
-  try {
-    const res = await fetch('https://www.gstatic.com/generate_204', {
-      method: 'HEAD',
-      cache: 'no-store',
-      signal: AbortSignal.timeout(4000),
-    });
-    return res.ok || res.status === 204;
-  } catch {
-    return false;
-  }
+// Simple reliable check — just use navigator.onLine
+// The gstatic probe was causing false negatives on WiFi
+export const checkRealConnectivity = () => {
+  return navigator.onLine;
 };
 
 const NetworkModal = ({ isOpen, onClose }) => {
