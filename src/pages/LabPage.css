@@ -8,6 +8,8 @@
   flex-direction: column;
   background: var(--color-bg);
   overflow: hidden;
+  /* needed so results-overlay positions relative to this */
+  isolation: isolate;
 }
 
 /* Modals */
@@ -658,4 +660,18 @@
     bottom: 0;
     width: calc(100% - 240px);
   }
+}
+
+/* Results overlay — sits inside .quantum-ide, covers it fully */
+.results-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--color-bg);
+  z-index: 100;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 }
