@@ -152,22 +152,23 @@ const LabPage = () => {
 
   /* exportFile */ const exportFile = async () => {
     if (!activeFile) return;
-    // Capacitor-safe download
-    const isNative = window.Capacitor && window.Capacitor.isNativePlatform();
-    if (isNative) {
-      // On Android, share via Web Share API
-      try {
-        const file = new File([activeFile.content], activeFile.name, { type: 'text/plain' });
-        await navigator.share({ files: [file], title: activeFile.name });
-        return;
-      } catch (e) { console.log('Share failed:', e); }
+    // Copy to clipboard (works everywhere including Capacitor WebView)
+    try {
+      await navigator.clipboard.writeText(activeFile.content);
+      copyWithFeedback(activeFile.content, 'Code copied to clipboard!');
+      return;
+    } catch (e) {
+      console.log('Clipboard failed, trying download:', e);
     }
-    const blob = new Blob([activeFile.content], { type: 'text/javascript' });
+    // Web fallback - blob download
+    const blob = new Blob([activeFile.content], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
     a.download = activeFile.name;
+    document.body.appendChild(a);
     a.click();
+    document.body.removeChild(a);
     URL.revokeObjectURL(url);
   };
 
@@ -311,7 +312,7 @@ const LabPage = () => {
 
   if (showResults && results) {
     return (
-      <div className="results-page">
+      <div className="quantum-ide results-page">
         <div className="results-page-header">
           <div className="results-info">
             <h2>Results</h2>

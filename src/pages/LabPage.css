@@ -382,9 +382,9 @@
 
 /* Results Page */
 .results-page {
-  position: fixed;
+  position: relative;
   top: 0;
-  left: 0;
+  
   right: 0;
   bottom: 64px;
   background: var(--color-bg);
@@ -638,6 +638,23 @@
   .quantum-ide {
     left: 240px;
     right: 0;
+    bottom: 0;
+    width: calc(100% - 240px);
+  }
+}
+/* Results page fills parent quantum-ide container */
+.quantum-ide.results-page {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 64px;
+  overflow-y: auto;
+}
+
+@media (min-width: 769px) {
+  .quantum-ide.results-page {
+    left: 240px;
     bottom: 0;
     width: calc(100% - 240px);
   }
