@@ -644,34 +644,28 @@
     width: calc(100% - 240px);
   }
 }
-/* Results page fills parent quantum-ide container */
-.quantum-ide.results-page {
+
+
+
+
+/* ── Results page ── */
+.results-page {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 64px;
+  background: var(--color-bg);
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  z-index: 500;
 }
 
 @media (min-width: 769px) {
-  .quantum-ide.results-page {
+  .results-page {
     left: 240px;
     bottom: 0;
     width: calc(100% - 240px);
   }
-}
-
-/* Results overlay — sits inside .quantum-ide, covers it fully */
-.results-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: var(--color-bg);
-  z-index: 100;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
 }

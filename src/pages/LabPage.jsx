@@ -150,7 +150,12 @@ const LabPage = () => {
     setNewFileName('');
   };
 
-  /* exportFile */ const exportFile = async () => {
+  const handleExplainFurther = (explanationText) => {
+    localStorage.setItem('pendingAskMessage', explanationText);
+    navigate('/');
+  };
+
+  const exportFile = async () => {
     if (!activeFile) return;
     // Copy to clipboard (works everywhere including Capacitor WebView)
     try {
@@ -310,6 +315,49 @@ const LabPage = () => {
     );
   };
 
+  if (showResults && results) {
+    return (
+      <div className="results-page">
+        <div className="results-page-header">
+          <div className="results-info">
+            <h2>Results</h2>
+            <span className="results-meta">Quantum Simulation • {results.shots} shots</span>
+          </div>
+          <button className="close-results-btn" onClick={() => setShowResults(false)}>
+            <RiCloseLargeFill size={24} />
+          </button>
+        </div>
+        <div className="view-selector">
+          {['histogram','graph','table'].map(v => (
+            <button key={v} className={`view-option ${activeView === v ? 'active' : ''}`} onClick={() => setActiveView(v)}>
+              {v.charAt(0).toUpperCase() + v.slice(1)}
+            </button>
+          ))}
+        </div>
+        <div className="results-visualization">
+          {activeView === 'histogram' && renderHistogram()}
+          {activeView === 'graph' && renderGraph()}
+          {activeView === 'table' && renderTable()}
+        </div>
+        <div className="results-page-actions">
+          <button className="export-results-btn" onClick={exportResults}>
+            <Download size={18} />Export Results
+          </button>
+          <button className="explain-btn" onClick={() => setShowExplainModal(true)}>
+            <RiSparkling2Fill size={18} />Explain
+          </button>
+        </div>
+        <ExplainModal
+          isOpen={showExplainModal}
+          onClose={() => setShowExplainModal(false)}
+          onExplainFurther={handleExplainFurther}
+          results={results}
+          code={activeFile?.content || ''}
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="quantum-ide">
       {errorInfo && (
@@ -350,47 +398,6 @@ const LabPage = () => {
 
       <ShotsSelector isOpen={showShotsModal} onClose={() => setShowShotsModal(false)} currentShots={shots} onSelect={setShots} />
 
-      {/* Results overlay — shown inside quantum-ide when Run completes */}
-      {showResults && results && (
-        <div className="results-overlay">
-          <div className="results-page-header">
-            <div className="results-info">
-              <h2>Results</h2>
-              <span className="results-meta">Quantum Simulation • {results.shots} shots</span>
-            </div>
-            <button className="close-results-btn" onClick={() => setShowResults(false)}>
-              <RiCloseLargeFill size={24} />
-            </button>
-          </div>
-          <div className="view-selector">
-            {['histogram','graph','table'].map(v => (
-              <button key={v} className={`view-option ${activeView === v ? 'active' : ''}`} onClick={() => setActiveView(v)}>
-                {v.charAt(0).toUpperCase() + v.slice(1)}
-              </button>
-            ))}
-          </div>
-          <div className="results-visualization">
-            {activeView === 'histogram' && renderHistogram()}
-            {activeView === 'graph' && renderGraph()}
-            {activeView === 'table' && renderTable()}
-          </div>
-          <div className="results-page-actions">
-            <button className="export-results-btn" onClick={exportResults}>
-              <Download size={18} />Export Results
-            </button>
-            <button className="explain-btn" onClick={() => setShowExplainModal(true)}>
-              <RiSparkling2Fill size={18} />Explain
-            </button>
-          </div>
-          <ExplainModal
-            isOpen={showExplainModal}
-            onClose={() => setShowExplainModal(false)}
-            onExplainFurther={handleExplainFurther}
-            results={results}
-            code={activeFile?.content || ''}
-          />
-        </div>
-      )}
 
       <div className="mode-tabs-container">
         <div className="mode-tabs">

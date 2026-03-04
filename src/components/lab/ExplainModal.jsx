@@ -97,15 +97,7 @@ const ExplainModal = ({ isOpen, onClose, results, code, onExplainFurther }) => {
           ))}
         </div>
 
-        <div className="explain-modal-footer">
-          <button className="explain-further-btn" onClick={handleExplainFurther}>
-            <Sparkles size={16} />
-            Explain Further
-          </button>
-          <button className="explain-btn-close" onClick={onClose}>
-            Close
-          </button>
-        </div>
+
 
       </div>
     </div>
