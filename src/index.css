@@ -75,3 +75,21 @@ body {
     font-size: 14px;
   }
 }
+
+@keyframes avatarSkeleton {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ── Capacitor Android safe area fix ── */
+/* Adds padding so status bar doesn't overlap content */
+@supports (padding-top: env(safe-area-inset-top)) {
+  .ask-page-container,
+  .discover-page,
+  .profile-page,
+  .quantum-ide,
+  .bookmarks-page,
+  .chat-history-page {
+    padding-top: env(safe-area-inset-top);
+  }
+}

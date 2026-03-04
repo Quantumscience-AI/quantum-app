@@ -13,7 +13,7 @@ import { sendChatMessage, sendMediaMessage } from '../config/api';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { canUse, incrementUsage, getRemainingUses } from '../utils/usageTracking';
-import NetworkModal from '../components/common/NetworkModal';
+import NetworkModal, { checkRealConnectivity } from '../components/common/NetworkModal';
 import './AskPage.css';
 
 const isMediaRequest = (text) => {
@@ -143,7 +143,7 @@ const AskPage = ({ onNavigateToHistory }) => {
 
   const handleSend = async () => {
     if ((!inputValue.trim() && uploadedFiles.length === 0) || isGenerating) return;
-    if (!navigator.onLine) { handleNetworkError(); return; }
+    if (!(await checkRealConnectivity())) { handleNetworkError(); return; }
     if (!user && !canUse('CHAT')) { setShowLimitModal(true); return; }
     if (!currentChatId) setCurrentChatId(Date.now().toString());
 

@@ -9,7 +9,7 @@ import { fetchPapersFeed, searchPapers } from '../config/api';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { canUse, incrementUsage, getRemainingUses } from '../utils/usageTracking';
-import NetworkModal from '../components/common/NetworkModal';
+import NetworkModal, { checkRealConnectivity } from '../components/common/NetworkModal';
 import './DiscoverPage.css';
 
 const DiscoverPage = ({ onOpenUrl }) => {
@@ -73,7 +73,7 @@ const DiscoverPage = ({ onOpenUrl }) => {
   }, []);
 
   const loadFeed = async () => {
-    if (!navigator.onLine) {
+    if (!(await checkRealConnectivity())) {
       setShowNetworkModal(true);
       setLoading(false);
       return;
@@ -91,7 +91,7 @@ const DiscoverPage = ({ onOpenUrl }) => {
 
   const handleSearch = async () => {
     if (!searchQuery.trim()) return;
-    if (!navigator.onLine) { setShowNetworkModal(true); return; }
+    if (!(await checkRealConnectivity())) { setShowNetworkModal(true); return; }
     if (!user && !canUse('SEARCH')) { setShowLimitModal(true); return; }
 
     setLoading(true);

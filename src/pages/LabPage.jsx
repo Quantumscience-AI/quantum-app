@@ -148,8 +148,18 @@ const LabPage = () => {
     setNewFileName('');
   };
 
-  const exportFile = () => {
+  /* exportFile */ const exportFile = async () => {
     if (!activeFile) return;
+    // Capacitor-safe download
+    const isNative = window.Capacitor && window.Capacitor.isNativePlatform();
+    if (isNative) {
+      // On Android, share via Web Share API
+      try {
+        const file = new File([activeFile.content], activeFile.name, { type: 'text/plain' });
+        await navigator.share({ files: [file], title: activeFile.name });
+        return;
+      } catch (e) { console.log('Share failed:', e); }
+    }
     const blob = new Blob([activeFile.content], { type: 'text/javascript' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -191,14 +201,28 @@ const LabPage = () => {
     }, 100);
   };
 
-  const exportResults = () => {
+  const exportResults = async () => {
     if (!results) return;
     const data = {
       results: results.counts,
       shots: results.shots,
       timestamp: new Date().toISOString()
     };
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const jsonStr = JSON.stringify(data, null, 2);
+    // Try Web Share API
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'quantum_results.json',
+          text: jsonStr,
+        });
+        return;
+      } catch (e) {
+        if (e.name === 'AbortError') return; // user cancelled
+      }
+    }
+    // Web fallback — blob download
+    const blob = new Blob([jsonStr], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
