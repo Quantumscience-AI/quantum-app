@@ -162,11 +162,8 @@ const DiscoverPage = ({ onOpenUrl }) => {
   };
 
   const handlePaperClick = (paper) => {
-    if (paper.pdfLink) {
-      openLink(paper.pdfLink);
-    } else {
-      setShowNotFoundModal(true);
-    }
+    const url = paper.pdfLink || paper.url || paper.link;
+    if (url) openLink(url);
   };
 
   const filteredPapers = selectedCategory === 'All'
@@ -189,6 +186,8 @@ const DiscoverPage = ({ onOpenUrl }) => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+              enterKeyHint="search"
+              inputMode="search"
               className="search-input"
             />
           </div>

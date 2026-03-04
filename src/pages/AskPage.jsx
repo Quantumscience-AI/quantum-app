@@ -49,6 +49,20 @@ const AskPage = ({ onNavigateToHistory }) => {
 
   useEffect(() => { localStorage.setItem('userId', userId); }, [userId]);
 
+  // Pick up message sent from Lab page "Explain Further"
+  useEffect(() => {
+    const pending = localStorage.getItem('pendingAskMessage');
+    if (pending) {
+      localStorage.removeItem('pendingAskMessage');
+      setInputValue(pending);
+      // Auto-send after short delay
+      setTimeout(() => {
+        setInputValue('');
+        handleSendWithContent(pending);
+      }, 300);
+    }
+  }, []);
+
   useEffect(() => {
     const savedChatId = localStorage.getItem('currentChatId');
     if (savedChatId) {

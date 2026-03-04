@@ -109,3 +109,76 @@
 .explain-btn-close:active {
   opacity: 0.8;
 }
+
+/* Header actions row */
+.explain-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.explain-icon-btn {
+  background: transparent;
+  border: none;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.explain-icon-btn:active {
+  background: var(--color-surface-alt);
+  color: var(--color-text);
+}
+
+/* Footer */
+.explain-modal-footer {
+  display: flex;
+  gap: 10px;
+  padding: 16px;
+  border-top: 1px solid var(--color-border);
+}
+
+.explain-further-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px;
+  background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.explain-further-btn:active {
+  opacity: 0.8;
+}
+
+.explain-btn-close {
+  padding: 12px 20px;
+  background: transparent;
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: 50px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.explain-btn-close:active {
+  background: var(--color-surface-alt);
+}

@@ -8,6 +8,7 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, 
   ResponsiveContainer, Cell 
 } from 'recharts';
+import { useNavigate } from 'react-router-dom';
 import { executeQuantumCircuit } from '../utils/quantumExecutor';
 import ErrorModal from '../components/common/ErrorModal';
 import ShotsSelector from '../components/lab/ShotsSelector';
@@ -35,6 +36,7 @@ state = state.hadamard(0);
 `;
 
 const LabPage = () => {
+  const navigate = useNavigate();
   const [files, setFiles] = useState([
     { id: 1, name: 'bell_state.js', content: DEFAULT_CODE, active: true }
   ]);
@@ -203,25 +205,24 @@ const LabPage = () => {
 
   const exportResults = async () => {
     if (!results) return;
-    const data = {
-      results: results.counts,
-      shots: results.shots,
-      timestamp: new Date().toISOString()
-    };
+    const data = { results: results.counts, shots: results.shots, timestamp: new Date().toISOString() };
     const jsonStr = JSON.stringify(data, null, 2);
-    // Try Web Share API
-    if (navigator.share) {
+    const isNative = window.Capacitor && window.Capacitor.isNativePlatform();
+    if (isNative) {
       try {
-        await navigator.share({
-          title: 'quantum_results.json',
-          text: jsonStr,
-        });
+        await navigator.clipboard.writeText(jsonStr);
+        alert('Results copied to clipboard!');
         return;
-      } catch (e) {
-        if (e.name === 'AbortError') return; // user cancelled
+      } catch (e) {}
+      if (navigator.share) {
+        try {
+          await navigator.share({ title: 'quantum_results.json', text: jsonStr });
+          return;
+        } catch (e) {
+          if (e.name === 'AbortError') return;
+        }
       }
     }
-    // Web fallback — blob download
     const blob = new Blob([jsonStr], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -344,6 +345,7 @@ const LabPage = () => {
         <ExplainModal
           isOpen={showExplainModal}
           onClose={() => setShowExplainModal(false)}
+          onExplainFurther={handleExplainFurther}
           results={results}
           code={activeFile?.content || ''}
         />
