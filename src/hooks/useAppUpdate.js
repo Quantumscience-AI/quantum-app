@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-const CURRENT_VERSION_CODE = 28;
+const CURRENT_VERSION_CODE = 29;
 
 const useAppUpdate = () => {
   const [updateAvailable, setUpdateAvailable] = useState(false);
