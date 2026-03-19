@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Play, Trash2, Plus, X, Download } from 'lucide-react';
 import { AiOutlineEdit } from 'react-icons/ai';
 import { MdOutlineHelpCenter } from 'react-icons/md';
@@ -37,10 +37,18 @@ state = state.hadamard(0);
 
 const LabPage = () => {
   const navigate = useNavigate();
-  const [files, setFiles] = useState([
-    { id: 1, name: 'bell_state.js', content: DEFAULT_CODE, active: true }
-  ]);
-  const [activeFileId, setActiveFileId] = useState(1);
+  const [files, setFiles] = useState(() => {
+    try {
+      const saved = localStorage.getItem('labFiles');
+      return saved ? JSON.parse(saved) : [{ id: 1, name: 'bell_state.js', content: DEFAULT_CODE, active: true }];
+    } catch { return [{ id: 1, name: 'bell_state.js', content: DEFAULT_CODE, active: true }]; }
+  });
+  const [activeFileId, setActiveFileId] = useState(() => {
+    try {
+      const saved = localStorage.getItem('labActiveFileId');
+      return saved ? parseInt(saved) : 1;
+    } catch { return 1; }
+  });
   const [shots, setShots] = useState(1024);
   const [results, setResults] = useState(null);
   const [isRunning, setIsRunning] = useState(false);
@@ -55,6 +63,21 @@ const LabPage = () => {
   const [showResults, setShowResults] = useState(false);
   const editorRef = useRef(null);
   const activeFile = files.find(f => f.id === activeFileId);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('labFiles', JSON.stringify(files));
+      localStorage.setItem('labActiveFileId', activeFileId.toString());
+    } catch (e) {}
+  }, [files, activeFileId]);
+
+  // Persist files and active tab to localStorage
+  useEffect(() => {
+    try {
+      localStorage.setItem('labFiles', JSON.stringify(files));
+      localStorage.setItem('labActiveFileId', activeFileId.toString());
+    } catch (e) { console.error('Failed to save lab files:', e); }
+  }, [files, activeFileId]);
   const COLORS = ['#8b5cf6','#3b82f6','#10b981','#f59e0b','#ef4444','#ec4899','#14b8a6','#f97316'];
 
   const handleEditorDidMount = (editor, monaco) => {
@@ -194,8 +217,8 @@ const LabPage = () => {
       if (result.success) {
         setResults({
           counts: result.counts,
-          shots: result.shots,
-          numQubits: result.numQubits,
+          shots: result.shots || shots,
+          numQubits: result.numQubits || 0,
           status: 'Complete'
         });
         setShowResults(true);

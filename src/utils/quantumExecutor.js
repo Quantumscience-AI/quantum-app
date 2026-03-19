@@ -3,6 +3,25 @@
  * Uses jsqubits correctly - no import needed, loaded globally
  */
 
+
+// Run classical JavaScript code
+const runClassicalJS = (code, numShots) => {
+  try {
+    const logs = [];
+    const mockConsole = { log: (...args) => logs.push(args.join(' ')) };
+    const fn = new Function('console', code);
+    fn(mockConsole);
+    if (logs.length > 0) {
+      const counts = {};
+      logs.forEach((log, i) => { counts[String(log).substring(0, 20)] = (counts[String(log).substring(0, 20)] || 0) + 1; });
+      return { success: true, counts, shots: logs.length, numQubits: 0, classicalOutput: logs, status: 'Complete' };
+    }
+    return { success: true, counts: { 'completed': numShots }, shots: numShots, numQubits: 0, status: 'Complete' };
+  } catch (e) {
+    return { success: false, error: e.message };
+  }
+};
+
 const runQuantumCode = (code, numShots) => {
   // Create a sandboxed function with jsqubits available
   const results = {};
@@ -73,11 +92,7 @@ const runQuantumCode = (code, numShots) => {
   }
 
   if (gateOps.length === 0) {
-    throw new Error(
-      'No gate operations found. Make sure your code includes gates like:\n' +
-      'state = state.hadamard(0);\n' +
-      'state = state.cnot(0, 1);'
-    );
+    return runClassicalJS(code, numShots);
   }
 
   // Run simulation numShots times
@@ -126,7 +141,7 @@ const runQuantumCode = (code, numShots) => {
     results[binary] = (results[binary] || 0) + 1;
   }
 
-  return { counts: results, numQubits };
+  return { counts: results, numQubits, success: true };
 };
 
 /**
@@ -305,36 +320,32 @@ const applyGate = (state, op, numQubits) => {
 /**
  * Main executor function
  */
+
+
 export const executeQuantumCircuit = (code, shots = 1024) => {
   try {
     if (!code || code.trim().length === 0) {
-      return {
-        success: false,
-        error: 'No code provided. Please write a quantum circuit.'
-      };
+      return { success: false, error: 'No code provided.' };
     }
 
-    const { counts, numQubits } = runQuantumCode(code, shots);
+    const result = runQuantumCode(code, shots);
 
-    if (Object.keys(counts).length === 0) {
-      return {
-        success: false,
-        error: 'No measurement results. Make sure your circuit has valid gates.'
-      };
+    // Classical JS result - already has success flag
+    if (result.success !== undefined) {
+      return result;
     }
 
-    return {
-      success: true,
-      counts,
-      shots,
-      numQubits
-    };
+    // Quantum result
+    const { counts, numQubits } = result;
+
+    if (!counts || Object.keys(counts).length === 0) {
+      return { success: false, error: 'No measurement results.' };
+    }
+
+    return { success: true, counts, shots, numQubits };
 
   } catch (error) {
-    return {
-      success: false,
-      error: error.message || 'Unknown error executing circuit'
-    };
+    return { success: false, error: error.message || 'Unknown error' };
   }
 };
 

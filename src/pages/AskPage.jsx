@@ -18,7 +18,7 @@ import './AskPage.css';
 
 const isMediaRequest = (text) => {
   const t = text.toLowerCase();
-  return /\b(image|images|photo|photos|picture|pictures|wallpaper|wallpapers|show me|find me|get me|video|videos|clip|clips|footage|watch|youtube|vimeo)\b/.test(t);
+  return /\b(image|images|photo|photos|pic|pics|picture|pictures|wallpaper|wallpapers|show me|find me|get me a photo|get me an image|video|videos|clip|clips|footage|watch|youtube|vimeo)\b/.test(t);
 };
 
 const AskPage = ({ onNavigateToHistory }) => {
@@ -124,16 +124,21 @@ const AskPage = ({ onNavigateToHistory }) => {
     setUploadedFiles(prev => prev.map((f, i) => i === index ? updatedFile : f));
   };
 
-  const buildApiMessages = () => {
+  const buildApiMessages = (files = uploadedFiles) => {
     // Build multipart messages including image data if present
-    const imageFiles = uploadedFiles.filter(f => f.isImage && f.dataURL);
+    const imageFiles = files.filter(f => f.isImage && (f.dataURL || f.ocrText?.startsWith('__IMAGE_DATA__:')));
 
     if (imageFiles.length > 0) {
       // Send as vision-style message with image content blocks
       const content = [];
 
       imageFiles.forEach(f => {
-        const dataURL = f.dataURL;
+        // Get dataURL from either direct field or __IMAGE_DATA__ marker
+        let dataURL = f.dataURL;
+        if (!dataURL && f.ocrText?.startsWith('__IMAGE_DATA__:')) {
+          dataURL = f.ocrText.replace('__IMAGE_DATA__:', '');
+        }
+        if (!dataURL) return;
         const base64 = dataURL.split(',')[1];
         const mimeType = dataURL.split(';')[0].split(':')[1] || 'image/jpeg';
         content.push({
@@ -199,6 +204,7 @@ const AskPage = ({ onNavigateToHistory }) => {
 
     abortControllerRef.current = new AbortController();
 
+
     try {
       // Add previous assistant messages as context
       const fullMessages = [
@@ -215,21 +221,20 @@ const AskPage = ({ onNavigateToHistory }) => {
         userId,
         (chunk) => {
           streamedText += chunk;
-          const cleanText = streamedText.replace(/\*\*/g, '').replace(/##\s*/g, '').replace(/###\s*/g, '');
+          clearTimeout(thinkingTimeout);
           setMessages(prev => {
             const filtered = prev.filter(m => m.id !== loadingId);
             const existing = filtered.find(m => m.id === loadingId + 2);
-            if (existing) return filtered.map(m => m.id === loadingId + 2 ? { ...m, content: cleanText } : m);
-            return [...filtered, { id: loadingId + 2, type: 'ai', content: cleanText, timestamp: new Date() }];
+            if (existing) return filtered.map(m => m.id === loadingId + 2 ? { ...m, content: streamedText } : m);
+            return [...filtered, { id: loadingId + 2, type: 'ai', content: streamedText, timestamp: new Date() }];
           });
           setTimeout(() => scrollToBottom('auto'), 50);
         },
         (finalText, meta) => {
           clearTimeout(thinkingTimeout);
-          const cleanFinal = finalText.replace(/\*\*/g, '').replace(/##\s*/g, '').replace(/###\s*/g, '');
           setMessages(prev => [
             ...prev.filter(m => m.id !== loadingId && m.id !== loadingId + 2),
-            { id: loadingId + 2, type: 'ai', content: cleanFinal || streamedText, timestamp: new Date(), metadata: meta }
+            { id: loadingId + 2, type: 'ai', content: finalText || streamedText, timestamp: new Date(), metadata: meta }
           ]);
           setIsGenerating(false);
           if (!user) incrementUsage('CHAT');
@@ -361,10 +366,14 @@ const AskPage = ({ onNavigateToHistory }) => {
 
   const handleRegenerate = (messageId) => {
     const messageIndex = messages.findIndex(m => m.id === messageId);
-    if (messageIndex > 0) {
-      setMessages(messages.slice(0, messageIndex));
-      setTimeout(() => handleSend(), 100);
-    }
+    if (messageIndex <= 0) return;
+    // Find the last user message before this AI message
+    const prevMessages = messages.slice(0, messageIndex);
+    const lastUserMsg = [...prevMessages].reverse().find(m => m.type === 'user');
+    if (!lastUserMsg) return;
+    // Remove AI message and resend
+    setMessages(prevMessages);
+    setTimeout(() => handleSendWithContent(lastUserMsg.content), 100);
   };
 
   return (

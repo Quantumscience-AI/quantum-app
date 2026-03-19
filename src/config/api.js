@@ -57,29 +57,35 @@ export const sendChatMessage = async (messages, userId, onChunk, onComplete) => 
       let fullText = '';
       let metadata = null;
 
+      const processLine = (line) => {
+        if (!line.startsWith('data: ')) return;
+        try {
+          const data = JSON.parse(line.slice(6));
+          if (data.type === 'meta') {
+            metadata = JSON.parse(data.data);
+          } else if (data.type === 'chunk') {
+            fullText += data.text;
+            onChunk(data.text); // fires immediately for each word/chunk
+          } else if (data.type === 'done') {
+            onComplete(fullText, metadata || { remaining: data.remaining });
+          }
+        } catch (e) {}
+      };
+
       while (true) {
         const { done, value } = await reader.read();
-        if (done) break;
-        buffer += decoder.decode(value, { stream: true });
+        if (done) {
+          // Process any remaining buffer
+          if (buffer.trim()) processLine(buffer.trim());
+          break;
+        }
+        // Decode and process immediately — no waiting
+        const raw = decoder.decode(value, { stream: true });
+        buffer += raw;
         const lines = buffer.split('\n');
         buffer = lines.pop() || '';
-
         for (const line of lines) {
-          if (line.startsWith('data: ')) {
-            try {
-              const data = JSON.parse(line.slice(6));
-              if (data.type === 'meta') {
-                metadata = JSON.parse(data.data);
-              } else if (data.type === 'chunk') {
-                fullText += data.text;
-                onChunk(data.text);
-              } else if (data.type === 'done') {
-                onComplete(fullText, metadata);
-              }
-            } catch (e) {
-              console.error('Parse error:', e);
-            }
-          }
+          if (line.trim()) processLine(line.trim());
         }
       }
     } else {
