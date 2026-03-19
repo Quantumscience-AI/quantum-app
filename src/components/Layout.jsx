@@ -8,12 +8,16 @@ import ProfilePage from '../pages/ProfilePage';
 import BookmarksPage from '../pages/BookmarksPage';
 import InAppBrowser from './common/InAppBrowser';
 import useInAppBrowser from '../hooks/useInAppBrowser';
+import useAppUpdate from '../hooks/useAppUpdate';
+import UpdateModal from './common/UpdateModal';
 
 const Layout = () => {
   const [activeTab, setActiveTab] = useState('discover');
   const [theme, setTheme] = useState('dark');
   const [showBookmarks, setShowBookmarks] = useState(false);
   const { browserState, openUrl, closeUrl } = useInAppBrowser();
+  const { updateAvailable, updateMessage, playStoreUrl, forceUpdate } = useAppUpdate();
+  const [showUpdate, setShowUpdate] = useState(!false);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme') || 'dark';
@@ -54,6 +58,13 @@ const Layout = () => {
       {browserState.isOpen && (
         <InAppBrowser url={browserState.url} onClose={closeUrl} />
       )}
+      <UpdateModal
+        isOpen={updateAvailable && showUpdate}
+        message={updateMessage}
+        playStoreUrl={playStoreUrl}
+        forceUpdate={forceUpdate}
+        onClose={() => setShowUpdate(false)}
+      />
     </div>
   );
 };
